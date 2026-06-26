@@ -9,7 +9,7 @@
     <style>
         /* 🖨️ FIXED PRINT LAYOUT ENGINE */
         @media print {
-            body { background: white !important; }
+            body { background: white !important; color: black !important; }
             body * { 
                 visibility: hidden; 
             }
@@ -35,6 +35,7 @@
                 box-shadow: none !important; 
                 padding: 0 !important; 
                 margin: 0 !important; 
+                color: black !important;
             }
             .no-print { 
                 display: none !important; 
@@ -47,36 +48,42 @@
         .animate-pulse-border { animation: alertPulse 2s infinite ease-in-out; }
     </style>
 </head>
-<body class="bg-[#eef2f5] font-sans text-gray-800 antialiased min-h-screen pb-12">
+<body id="bodyEngine" class="bg-[#eef2f5] font-sans text-gray-800 antialiased min-h-screen pb-12 transition-colors duration-200">
 
     <div id="alertBanner" class="hidden no-print w-full bg-rose-600 text-white text-center py-2.5 px-4 text-xs font-bold tracking-wide shadow-md flex items-center justify-center gap-2 transition-all">
         <span>🚨 ALERT: May mga fleet units na nangangailangan ng agarang maintenance! Paki-tsek ang mga OVERDUE na sasakyan sa ibaba.</span>
     </div>
 
-    <div class="text-center py-6 px-4 no-print">
-        <h1 class="text-xl sm:text-2xl font-bold flex flex-wrap items-center justify-center gap-2 text-[#1e293b]">
-            ⚙️ Fleet & Vehicle PMS Monitor <span class="text-[10px] sm:text-xs bg-slate-800 text-white font-mono px-2 py-0.5 rounded-full">v9.0 Comm Pro</span>
-        </h1>
-        <p class="text-[11px] sm:text-xs text-gray-500 mt-1 font-medium">Odometer vs Months — Integrated with One-Click Driver Dispatch Ping</p>
+    <div class="text-center py-6 px-4 no-print relative max-w-[1550px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="w-10 h-10 hidden sm:block"></div> <div>
+            <h1 class="text-xl sm:text-2xl font-bold flex flex-wrap items-center justify-center gap-2 data-theme-text text-[#1e293b]">
+                ⚙️ Fleet & Vehicle PMS Monitor <span class="text-[10px] sm:text-xs bg-slate-800 text-white font-mono px-2 py-0.5 rounded-full">v9.2 Core</span>
+            </h1>
+            <p class="text-[11px] sm:text-xs text-gray-500 mt-1 font-medium data-theme-subtext">Odometer vs Months — Clean Monitoring Dashboard</p>
+        </div>
+
+        <button onclick="toggleDarkMode()" id="darkModeBtn" class="bg-white hover:bg-gray-100 border text-gray-700 font-bold px-3 py-2 rounded-lg text-xs shadow-sm flex items-center gap-2 transition-all shrink-0">
+            🌙 <span>Dark Mode</span>
+        </button>
     </div>
 
     <div class="max-w-[1550px] mx-auto px-4 no-print">
         
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <div onclick="setFilter('ALL')" id="btnFilterAll" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-slate-700 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all ring-2 ring-slate-700">
-                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Total Fleet</span>
-                <span id="statTotal" class="text-2xl sm:text-3xl font-bold text-center text-slate-800">0</span>
+            <div onclick="setFilter('ALL')" id="btnFilterAll" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-slate-700 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all ring-2 ring-slate-700 data-theme-card">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full data-theme-subtext">Total Fleet</span>
+                <span id="statTotal" class="text-2xl sm:text-3xl font-bold text-center text-slate-800 data-theme-text">0</span>
             </div>
-            <div onclick="setFilter('GOOD')" id="btnFilterGood" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-emerald-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all">
-                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Good Status</span>
+            <div onclick="setFilter('GOOD')" id="btnFilterGood" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-emerald-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all data-theme-card">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full data-theme-subtext">Good Status</span>
                 <span id="statGood" class="text-2xl sm:text-3xl font-bold text-center text-emerald-600">0</span>
             </div>
-            <div onclick="setFilter('DUE SOON')" id="btnFilterDue" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-amber-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all">
-                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Due Soon</span>
+            <div onclick="setFilter('DUE SOON')" id="btnFilterDue" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-amber-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all data-theme-card">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full data-theme-subtext">Due Soon</span>
                 <span id="statDue" class="text-2xl sm:text-3xl font-bold text-center text-amber-600">0</span>
             </div>
-            <div onclick="setFilter('OVERDUE')" id="btnFilterOverdue" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-rose-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all">
-                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Overdue</span>
+            <div onclick="setFilter('OVERDUE')" id="btnFilterOverdue" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-rose-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all data-theme-card">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full data-theme-subtext">Overdue</span>
                 <span id="statOverdue" class="text-2xl sm:text-3xl font-bold text-center text-rose-600">0</span>
             </div>
         </div>
@@ -85,11 +92,11 @@
             <div class="w-full lg:w-1/3 flex gap-2">
                 <div class="relative w-full">
                     <input type="text" id="searchInput" oninput="renderFleet()" placeholder="Search Unit, Plate, or Driver..." 
-                           class="w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white shadow-sm">
+                           class="w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white shadow-sm data-theme-input data-theme-text">
                     <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 font-bold text-sm">×</button>
                 </div>
                 
-                <button onclick="toggleLayoutView()" id="viewToggleBtn" class="bg-white hover:bg-gray-100 border text-gray-700 font-bold px-3 py-2.5 rounded-lg text-xs sm:text-sm shadow-sm flex items-center gap-1 shrink-0">
+                <button onclick="toggleLayoutView()" id="viewToggleBtn" class="bg-white hover:bg-gray-100 border text-gray-700 font-bold px-3 py-2.5 rounded-lg text-xs sm:text-sm shadow-sm flex items-center gap-1 shrink-0 data-theme-btn">
                     📋 <span id="viewToggleLabel">Table View</span>
                 </button>
             </div>
@@ -104,69 +111,63 @@
         </div>
 
         <div class="text-[11px] sm:text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider flex justify-between items-center">
-            <div>Active Filter: <span id="activeFilterLabel" class="text-slate-800 bg-slate-200 px-2 py-0.5 rounded">All Fleet Units</span></div>
-            <div id="layoutBadgeIndicator" class="text-[9px] sm:text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-mono uppercase">GRID CARD MODE</div>
+            <div class="data-theme-subtext">Active Filter: <span id="activeFilterLabel" class="text-slate-800 bg-slate-200 px-2 py-0.5 rounded data-theme-badge">All Fleet Units</span></div>
+            <div id="layoutBadgeIndicator" class="text-[9px] sm:text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-mono uppercase data-theme-layout-badge">GRID CARD MODE</div>
         </div>
 
         <div id="displayContainer" class="w-full"></div>
     </div>
 
     <div id="equipmentModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden items-center justify-center z-50 p-4 no-print">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 sm:p-6 relative max-h-[95vh] overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 sm:p-6 relative max-h-[95vh] overflow-y-auto data-theme-modal">
             <button onclick="closeEquipmentModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
-            <h2 id="modalTitle" class="text-base sm:text-lg font-bold text-slate-800 border-b pb-2 mb-4">Add Equipment</h2>
+            <h2 id="modalTitle" class="text-base sm:text-lg font-bold text-slate-800 border-b pb-2 mb-4 data-theme-text border-gray-200">Add Equipment</h2>
             
             <form id="fleetForm" onsubmit="saveEquipment(event)" class="space-y-4 text-sm">
                 <input type="hidden" id="editId">
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Equipment / Vehicle Name:</label>
-                        <input type="text" id="formModel" required placeholder="e.g., Toyota Vios" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
+                        <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Equipment / Vehicle Name:</label>
+                        <input type="text" id="formModel" required placeholder="e.g., Toyota Vios" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800 data-theme-input data-theme-text">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Plate Number / ID:</label>
-                        <input type="text" id="formPlate" required placeholder="e.g., NDG 1234" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
+                        <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Plate Number / ID:</label>
+                        <input type="text" id="formPlate" required placeholder="e.g., NDG 1234" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800 data-theme-input data-theme-text">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Assigned Driver:</label>
-                        <input type="text" id="formDriver" placeholder="e.g., Juan Dela Cruz" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Driver Mobile No.:</label>
-                        <input type="text" id="formDriverPhone" placeholder="e.g., 09171234567" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
-                    </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Assigned Driver / Handler:</label>
+                    <input type="text" id="formDriver" placeholder="e.g., Juan Dela Cruz" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800 data-theme-input data-theme-text">
                 </div>
 
-                <div class="border rounded-lg p-3 bg-slate-50 space-y-2">
-                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1">📁 Digital Document Vault (Base64)</span>
+                <div class="border rounded-lg p-3 bg-slate-50 space-y-2 data-theme-subcard border-gray-200">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1 data-theme-text">📁 Digital Document Vault (Base64)</span>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                         <div>
-                            <label class="block text-[10px] font-semibold text-gray-500">OR/CR Scanned Copy:</label>
-                            <input type="file" id="formFileOrcr" onchange="encodeDocFile(this, 'orcr')" class="w-full text-[11px] bg-white border rounded p-1.5 sm:p-1">
+                            <label class="block text-[10px] font-semibold text-gray-500 data-theme-subtext">OR/CR Scanned Copy:</label>
+                            <input type="file" id="formFileOrcr" onchange="encodeDocFile(this, 'orcr')" class="w-full text-[11px] bg-white border rounded p-1.5 sm:p-1 data-theme-input data-theme-text">
                             <input type="hidden" id="formHideOrcr">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold text-gray-500">Insurance Policy:</label>
-                            <input type="file" id="formFileInsurance" onchange="encodeDocFile(this, 'insurance')" class="w-full text-[11px] bg-white border rounded p-1.5 sm:p-1">
+                            <label class="block text-[10px] font-semibold text-gray-500 data-theme-subtext">Insurance Policy:</label>
+                            <input type="file" id="formFileInsurance" onchange="encodeDocFile(this, 'insurance')" class="w-full text-[11px] bg-white border rounded p-1.5 sm:p-1 data-theme-input data-theme-text">
                             <input type="hidden" id="formHideInsurance">
                         </div>
                     </div>
                 </div>
 
-                <div class="border-t pt-2">
-                    <span class="text-xs font-bold text-blue-600 block mb-2">📊 BASIS 1: ODOMETER INTERVAL</span>
+                <div class="border-t pt-2 border-gray-200">
+                    <span class="text-xs font-bold text-blue-600 block mb-2 data-theme-link text-blue-500">📊 BASIS 1: ODOMETER INTERVAL</span>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 mb-1">Current Odometer (KM):</label>
-                            <input type="number" id="formCurrentOdo" oninput="autoCalcTargetOdo()" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white">
+                            <label class="block text-xs font-bold text-slate-600 mb-1 data-theme-text">Current Odometer (KM):</label>
+                            <input type="number" id="formCurrentOdo" oninput="autoCalcTargetOdo()" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white data-theme-input data-theme-text">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 mb-1">Odo Cycle Interval:</label>
-                            <select id="formOdoInterval" onchange="autoCalcTargetOdo()" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8">
+                            <label class="block text-xs font-bold text-slate-600 mb-1 data-theme-text">Odo Cycle Interval:</label>
+                            <select id="formOdoInterval" onchange="autoCalcTargetOdo()" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8 data-theme-input data-theme-text">
                                 <option value="5000">Every 5,000 KM</option>
                                 <option value="10000" selected>Every 10,000 KM</option>
                                 <option value="15000">Every 15,000 KM</option>
@@ -174,21 +175,21 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 mb-1">Target PMS Odometer (KM):</label>
-                        <input type="number" id="formTargetOdo" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white">
+                        <label class="block text-xs font-bold text-slate-600 mb-1 data-theme-text">Target PMS Odometer (KM):</label>
+                        <input type="number" id="formTargetOdo" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white data-theme-input data-theme-text">
                     </div>
                 </div>
 
-                <div class="border-t pt-2">
-                    <span class="text-xs font-bold text-blue-600 block mb-2">📅 BASIS 2: TIMEFRAME (MONTHS)</span>
+                <div class="border-t pt-2 border-gray-200">
+                    <span class="text-xs font-bold text-blue-600 block mb-2 data-theme-link text-blue-500">📅 BASIS 2: TIMEFRAME (MONTHS)</span>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 mb-1">Last PMS Date:</label>
-                            <input type="date" id="formLastPmsDate" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white">
+                            <label class="block text-xs font-bold text-slate-600 mb-1 data-theme-text">Last PMS Date:</label>
+                            <input type="date" id="formLastPmsDate" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white data-theme-input data-theme-text">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-600 mb-1">Time Interval Cycle:</label>
-                            <select id="formInterval" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8">
+                            <label class="block text-xs font-bold text-slate-600 mb-1 data-theme-text">Time Interval Cycle:</label>
+                            <select id="formInterval" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8 data-theme-input data-theme-text">
                                 <option value="3">Every 3 Months</option>
                                 <option value="6" selected>Every 6 Months</option>
                                 <option value="12">Every 12 Months</option>
@@ -205,35 +206,35 @@
     </div>
 
     <div id="donePmsModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden items-center justify-center z-50 p-4 no-print">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 sm:p-6 relative max-h-[95vh] overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 sm:p-6 relative max-h-[95vh] overflow-y-auto data-theme-modal">
             <button onclick="closeDonePmsModal()" class="absolute top-4 right-4 text-gray-400 text-xl font-bold">×</button>
             <h2 class="text-base sm:text-lg font-bold text-emerald-600 mb-1 flex items-center gap-2">✅ Log Done PMS</h2>
-            <p class="text-xs text-gray-500 mb-4">Enter service info below. Old limits automatically push forward.</p>
+            <p class="text-xs text-gray-500 mb-4 data-theme-subtext">Enter service info below. Old limits automatically push forward.</p>
 
-            <div id="autoRecommendationBox" class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-3 text-xs mb-3 font-semibold space-y-1"></div>
+            <div id="autoRecommendationBox" class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-3 text-xs mb-3 font-semibold space-y-1 data-theme-advisory"></div>
 
             <form id="donePmsForm" onsubmit="submitDonePms(event)" class="space-y-3 text-sm">
                 <input type="hidden" id="pmsVehicleId">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Current Odometer Now (KM):</label>
-                    <input type="number" id="pmsCurrentOdo" oninput="autoCalcNextTargetOdo()" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
+                    <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Current Odometer Now (KM):</label>
+                    <input type="number" id="pmsCurrentOdo" oninput="autoCalcNextTargetOdo()" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm data-theme-input data-theme-text">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">New Target Odometer for NEXT PMS (KM):</label>
-                    <input type="number" id="pmsTargetOdo" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
+                    <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">New Target Odometer for NEXT PMS (KM):</label>
+                    <input type="number" id="pmsTargetOdo" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm data-theme-input data-theme-text">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Date PMS was Performed:</label>
-                    <input type="date" id="pmsDate" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
+                    <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Date PMS was Performed:</label>
+                    <input type="date" id="pmsDate" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm data-theme-input data-theme-text">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Driver / Personnel-in-Charge:</label>
-                    <input type="text" id="pmsIncharge" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
+                    <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Driver / Personnel-in-Charge:</label>
+                    <input type="text" id="pmsIncharge" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm data-theme-input data-theme-text">
                 </div>
 
-                <div class="border rounded-lg p-3 bg-white space-y-2">
-                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1">🖋 Services & Replacements Performed:</span>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-gray-600">
+                <div class="border rounded-lg p-3 bg-white space-y-2 data-theme-subcard border-gray-200">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1 data-theme-text">🖋 Services & Replacements Performed:</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-gray-600 data-theme-subtext">
                         <label class="flex items-center gap-2 py-1"><input type="checkbox" value="Change Oil" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Change Oil</label>
                         <label class="flex items-center gap-2 py-1"><input type="checkbox" value="Brake Pads/Fluid" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Brake Pads/Fluid</label>
                         <label class="flex items-center gap-2 py-1"><input type="checkbox" value="Spark Plugs" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Spark Plugs</label>
@@ -243,12 +244,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Total PMS Service Cost (₱):</label>
-                    <input type="number" id="pmsCost" placeholder="0" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
+                    <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Total PMS Service Cost (₱):</label>
+                    <input type="number" id="pmsCost" placeholder="0" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm data-theme-input data-theme-text">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Service Remarks / Notes (Optional):</label>
-                    <textarea id="pmsNotes" placeholder="e.g., Mechanic found minor leak but fixed already" class="w-full border px-3 py-2 rounded-lg h-16 text-sm"></textarea>
+                    <label class="block text-xs font-bold text-slate-700 mb-1 data-theme-text">Service Remarks / Notes (Optional):</label>
+                    <textarea id="pmsNotes" placeholder="e.g., Mechanic found minor leak but fixed already" class="w-full border px-3 py-2 rounded-lg h-16 text-sm data-theme-input data-theme-text"></textarea>
                 </div>
                 <button type="submit" class="w-full bg-[#10b981] hover:bg-[#059669] text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all text-sm">Update & Save to History</button>
             </form>
@@ -259,48 +260,49 @@
         <div id="printSlipArea" class="bg-white border-2 border-slate-800 p-5 sm:p-8 max-w-xl w-full text-xs font-mono text-slate-900 relative max-h-[95vh] overflow-y-auto">
             <button onclick="closeSlipModal()" class="absolute top-3 right-3 text-gray-400 font-bold no-print text-lg">×</button>
             <div class="text-center border-b-2 border-double border-slate-800 pb-4 mb-4">
-                <h2 class="text-sm sm:text-lg font-black tracking-widest">LOGISTICS MAINTENANCE & GATE PASS</h2>
+                <h2 class="text-sm sm:text-lg font-black tracking-widest text-slate-950">LOGISTICS MAINTENANCE & GATE PASS</h2>
                 <p id="slipGeneratedTime" class="text-[9px] text-gray-400 mt-1"></p>
             </div>
             
             <div class="border-b pb-4 mb-4">
-                <div class="grid grid-cols-1 gap-1.5 w-full">
+                <div class="grid grid-cols-1 gap-1.5 w-full text-slate-950">
                     <div>Equipment: <strong id="slipVehicle">—</strong></div>
                     <div>Plate/ID: <strong id="slipPlate">—</strong></div>
                     <div>Assigned Driver: <strong id="slipDriver">—</strong></div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 border-b pb-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 border-b pb-4 mb-4 text-slate-950">
                 <div>Current Mileage: <span id="slipCurrentOdo">—</span></div>
                 <div>Next Target Mileage: <span id="slipTargetOdo" class="text-rose-600 font-bold">—</span></div>
                 <div>Last Service Date: <span id="slipLastDate">—</span></div>
                 <div>Deadline Due Date: <span id="slipTargetDue" class="text-rose-600 font-bold">—</span></div>
             </div>
-            <h3 class="text-[10px] font-black uppercase bg-slate-100 p-1 mb-2">⚙ Recommended Scope Checklist</h3>
+            <h3 class="text-[10px] font-black uppercase bg-slate-100 p-1 mb-2 text-slate-950">⚙ Recommended Scope Checklist</h3>
             <div id="slipRecommendedScope" class="space-y-1 pl-1 mb-6 text-slate-700"></div>
             
-            <div class="grid grid-cols-3 gap-2 text-center text-[9px] sm:text-[10px] pt-4 border-t border-slate-900">
+            <div class="grid grid-cols-3 gap-2 text-center text-[9px] sm:text-[10px] pt-4 border-t border-slate-900 text-slate-950">
                 <div class="border-t border-slate-900 pt-1" id="slipSignDriver">DRIVER SIGNATURE</div>
                 <div class="border-t border-slate-900 pt-1">PREPARED BY</div>
                 <div class="border-t border-slate-900 pt-1">APPROVED BY</div>
             </div>
             <div class="mt-6 text-center no-print flex gap-2">
                 <button onclick="window.print()" class="w-full bg-slate-800 text-white font-bold py-2.5 rounded text-xs shadow-md">Print Official Slip</button>
-                <button onclick="closeSlipModal()" class="bg-gray-200 px-4 rounded text-xs hover:bg-gray-300">Close</button>
+                <button onclick="closeSlipModal()" class="bg-gray-200 px-4 rounded text-xs hover:bg-gray-300 text-slate-800">Close</button>
             </div>
         </div>
     </div>
 
     <script>
         const defaultFleet = [
-            { id: "1", model: "Toyota Land Cruiser", plate: "AXA 2845", driver: "Danilo Santos", driverPhone: "09171234567", currentOdo: 84200, targetOdo: 84000, lastPmsOdo: 74000, lastPmsDate: "2026-01-15", targetDue: "2026-07-15", interval: 6, odoInterval: 10000, totalExpenses: 15000, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-01-15", odo:74000, cost:15000, incharge:"Danilo Santos", notes:"Full Oil change package performed."}] },
-            { id: "2", model: "L300 Exceed Van", plate: "NDG 5612", driver: "Juan Dela Cruz", driverPhone: "09189876543", currentOdo: 99500, targetOdo: 109500, lastPmsOdo: 99500, lastPmsDate: "2026-05-20", targetDue: "2026-11-20", interval: 6, odoInterval: 10000, totalExpenses: 25674, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-05-20", odo:99500, cost:25674, incharge:"Juan Dela Cruz", notes:"Brake fluid swap + standard filters alignment."}] }
+            { id: "1", model: "Toyota Land Cruiser", plate: "AXA 2845", driver: "Danilo Santos", currentOdo: 84200, targetOdo: 84000, lastPmsOdo: 74000, lastPmsDate: "2026-01-15", targetDue: "2026-07-15", interval: 6, odoInterval: 10000, totalExpenses: 15000, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-01-15", odo:74000, cost:15000, incharge:"Danilo Santos", notes:"Full Oil change package performed."}] },
+            { id: "2", model: "L300 Exceed Van", plate: "NDG 5612", driver: "Juan Dela Cruz", currentOdo: 99500, targetOdo: 109500, lastPmsOdo: 99500, lastPmsDate: "2026-05-20", targetDue: "2026-11-20", interval: 6, odoInterval: 10000, totalExpenses: 25674, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-05-20", odo:99500, cost:25674, incharge:"Juan Dela Cruz", notes:"Brake fluid swap + standard filters alignment."}] }
         ];
 
         let fleet = JSON.parse(localStorage.getItem('pms_fleet_v8_enterprise')) || defaultFleet;
         let currentFilter = "ALL"; 
         let currentLayoutView = "GRID"; 
+        let isDarkMode = localStorage.getItem('pms_dark_mode') === 'true';
 
         function saveState() { 
             localStorage.setItem('pms_fleet_v8_enterprise', JSON.stringify(fleet)); 
@@ -366,29 +368,6 @@
 
         function setFilter(statusType) { currentFilter = statusType; renderFleet(); }
 
-        /* 📲 ONE-CLICK DISPATCH DRIVER PING SYSTEM */
-        function pingDriver(id, type) {
-            const item = fleet.find(f => f.id === id);
-            if (!item || !item.driverPhone) { 
-                alert("Paalala: Walang naka-save na Mobile Number para sa driver na ito. Paki-edit muna ang profile."); 
-                return; 
-            }
-            
-            const metrics = evaluateMetrics(item);
-            let phone = item.driverPhone.replace(/[^0-9]/g, '');
-            // Convert standard local 0917 to international 63917 for WhatsApp compliance
-            if(phone.startsWith('0')) phone = '63' + phone.substring(1);
-
-            const msg = `Magandang araw ${item.driver}! Paalala mula sa Logistics Fleet Management. Ang minamaneho mong unit na ${item.model} (${item.plate}) ay nasa [${metrics.status}] status na para sa PMS maintenance. Ang kasalukuyang Odometer nito ay ${item.currentOdo.toLocaleString()} KM habang ang target PMS ay ${item.targetOdo.toLocaleString()} KM. Paki-schedule o ibalik na agad ang unit sa garahe. Salamat at mag-ingat sa biyahe!`;
-            
-            if(type === 'chat') {
-                // Generates multi-platform instant deep-link
-                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-            } else if(type === 'sms') {
-                window.open(`sms:${item.driverPhone}?body=${encodeURIComponent(msg)}`, '_blank');
-            }
-        }
-
         function filterItemLogs(itemId) {
             const item = fleet.find(f => f.id === itemId); if (!item) return;
             const searchVal = document.getElementById(`logSearch_${itemId}`).value.toLowerCase().trim();
@@ -396,9 +375,9 @@
             let filteredLogs = (item.logs || []).filter(l => !searchVal || l.date.includes(searchVal) || (l.incharge && l.incharge.toLowerCase().includes(searchVal)) || (l.notes && l.notes.toLowerCase().includes(searchVal)));
             
             logsContainer.innerHTML = filteredLogs.map(log => `
-                <div class="bg-white p-1 rounded border text-[10px] mb-1">
-                    <div class="flex justify-between font-bold text-emerald-700"><span>✔ ${log.date} (@ ${log.odo} KM)</span><span>₱${log.cost}</span></div>
-                    <div class="text-gray-500">Incharge: ${log.incharge || 'Driver'} | Note: ${log.notes}</div>
+                <div class="${isDarkMode ? 'bg-[#1e293b] border-gray-700' : 'bg-white border-gray-200'} p-1 rounded border text-[10px] mb-1">
+                    <div class="flex justify-between font-bold text-emerald-500"><span>✔ ${log.date} (@ ${log.odo} KM)</span><span>₱${log.cost}</span></div>
+                    <div class="${isDarkMode ? 'text-gray-400' : 'text-gray-500'}">Incharge: ${log.incharge || 'Driver'} | Note: ${log.notes}</div>
                 </div>
             `).join('') || `<div class='text-gray-400 text-[10px] text-center'>No logs matched.</div>`;
         }
@@ -412,7 +391,6 @@
                     "Vehicle Name/Model": f.model,
                     "Plate Number": f.plate,
                     "Assigned Driver": f.driver,
-                    "Driver Mobile No": f.driverPhone || "N/A",
                     "Current Odometer (KM)": f.currentOdo,
                     "Target PMS Limit (KM)": f.targetOdo,
                     "Last PMS Service Date": f.lastPmsDate,
@@ -465,20 +443,24 @@
             document.getElementById('layoutBadgeIndicator').textContent = currentLayoutView === "GRID" ? "GRID CARD MODE" : "TABLE VIEW MODE";
 
             if (currentLayoutView === "TABLE") {
-                let tableHtml = `<div class="bg-white rounded-xl border overflow-x-auto shadow-sm"><table class="w-full text-xs text-left min-w-[600px]">
-                    <thead class="bg-slate-50 border-b"><tr><th class="p-3">Unit Name</th><th class="p-3">Plate</th><th class="p-3">Driver Info</th><th class="p-3">Status</th><th class="p-3">Odo</th><th class="p-3 text-right">Actions</th></tr></thead><tbody>`;
+                let tableHtml = `<div class="${isDarkMode ? 'bg-[#1e293b] border-gray-700' : 'bg-white border-gray-200'} rounded-xl border overflow-x-auto shadow-sm">
+                    <table class="w-full text-xs text-left min-w-[600px]">
+                    <thead class="${isDarkMode ? 'bg-[#0f172a] text-gray-300 border-gray-700' : 'bg-slate-50 border-b text-gray-700'}">
+                        <tr><th class="p-3">Unit Name</th><th class="p-3">Plate</th><th class="p-3">Driver</th><th class="p-3">Status</th><th class="p-3">Odo</th><th class="p-3 text-right">Actions</th></tr>
+                    </thead>
+                    <tbody class="${isDarkMode ? 'text-gray-300' : 'text-gray-800'}">`;
+                
                 filteredFleet.forEach(item => {
                     const metrics = evaluateMetrics(item);
-                    tableHtml += `<tr class="border-b hover:bg-slate-50">
+                    tableHtml += `<tr class="border-b ${isDarkMode ? 'border-gray-700 hover:bg-slate-800' : 'border-gray-200 hover:bg-slate-50'}">
                         <td class="p-3 font-bold">${item.model}</td>
                         <td class="p-3 font-mono">${item.plate}</td>
-                        <td class="p-3">${item.driver} <span class="text-gray-400 block font-mono text-[10px]">${item.driverPhone || 'No Num'}</span></td>
-                        <td class="p-3 font-bold ${metrics.status === 'OVERDUE' ? 'text-rose-600' : metrics.status === 'DUE SOON' ? 'text-amber-600' : 'text-emerald-600'}">${metrics.status}</td>
+                        <td class="p-3">${item.driver}</td>
+                        <td class="p-3 font-bold ${metrics.status === 'OVERDUE' ? 'text-rose-500' : metrics.status === 'DUE SOON' ? 'text-amber-500' : 'text-emerald-500'}">${metrics.status}</td>
                         <td class="p-3 font-semibold">${item.currentOdo.toLocaleString()} KM</td>
                         <td class="p-3 text-right space-x-1">
-                            <button onclick="pingDriver('${item.id}', 'chat')" class="bg-blue-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">💬 Ping</button>
                             <button onclick="openDonePmsModal('${item.id}')" class="bg-emerald-500 text-white px-2 py-1 rounded text-[11px] font-bold">Done</button>
-                            <button onclick="openSlip('${item.id}')" class="bg-sky-100 text-sky-800 px-2 py-1 rounded text-[11px] font-bold">Slip</button>
+                            <button onclick="openSlide('${item.id}')" class="bg-sky-100 text-sky-800 px-2 py-1 rounded text-[11px] font-bold">Slip</button>
                         </td>
                     </tr>`;
                 });
@@ -504,34 +486,24 @@
                     if (metrics.status === "DUE SOON") barColor = "bg-amber-500";
                     if (metrics.status === "OVERDUE") barColor = "bg-rose-500";
                     
-                    let alertNotice = metrics.status !== "OVERDUE" ? `<div class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-2.5 text-[10px] font-bold mb-3">📢 Alert: ${metrics.odoDiff.toLocaleString()} KM o ${metrics.daysDiff} araw na lang natitira bago mag-due.</div>` : "";
+                    let alertNotice = metrics.status !== "OVERDUE" ? `<div class="${isDarkMode ? 'bg-blue-950/40 border-blue-900 text-blue-300' : 'bg-blue-50 border border-blue-200 text-blue-900'} rounded-lg p-2.5 text-[10px] font-bold mb-3">📢 Alert: ${metrics.odoDiff.toLocaleString()} KM o ${metrics.daysDiff} araw na lang natitira bago mag-due.</div>` : "";
 
                     let historicalLogsHtml = "";
                     (item.logs || []).forEach(l => {
-                        historicalLogsHtml += `<div class="border-b py-1.5 text-[10px]">✔ ${l.date} (${l.odo.toLocaleString()} KM) - ₱${l.cost.toLocaleString()} by ${l.incharge || 'Staff'}<br><span class="text-gray-400 italic">${l.notes}</span></div>`;
+                        historicalLogsHtml += `<div class="border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} py-1.5 text-[10px]">✔ ${l.date} (${l.odo.toLocaleString()} KM) - ₱${l.cost.toLocaleString()} by ${l.incharge || 'Staff'}<br><span class="${isDarkMode ? 'text-gray-400' : 'text-gray-400'} italic">${l.notes}</span></div>`;
                     });
 
-                    let orcrBadge = item.orcrDoc ? `<button onclick="downloadDoc('${item.orcrDoc}', 'ORCR_${item.plate}.png')" class="bg-slate-800 hover:bg-slate-900 text-white text-[11px] px-3 py-1.5 rounded-lg font-bold">📄 OR/CR File</button>` : `<span class="text-[11px] text-gray-400 italic py-1">No OR/CR</span>`;
-                    let insBadge = item.insuranceDoc ? `<button onclick="downloadDoc('${item.insuranceDoc}', 'Insurance_${item.plate}.png')" class="bg-slate-800 hover:bg-slate-900 text-white text-[11px] px-3 py-1.5 rounded-lg font-bold">🛡️ Insurance</button>` : `<span class="text-[11px] text-gray-400 italic py-1">No Ins.</span>`;
+                    let orcrBadge = item.orcrDoc ? `<button onclick="downloadDoc('${item.orcrDoc}', 'ORCR_${item.plate}.png')" class="${isDarkMode ? 'bg-slate-700 hover:bg-slate-600' : 'bg-slate-800 hover:bg-slate-900'} text-white text-[11px] px-3 py-1.5 rounded-lg font-bold">📄 OR/CR File</button>` : `<span class="text-[11px] text-gray-400 italic py-1">No OR/CR</span>`;
+                    let insBadge = item.insuranceDoc ? `<button onclick="downloadDoc('${item.insuranceDoc}', 'Insurance_${item.plate}.png')" class="${isDarkMode ? 'bg-slate-700 hover:bg-slate-600' : 'bg-slate-800 hover:bg-slate-900'} text-white text-[11px] px-3 py-1.5 rounded-lg font-bold">🛡️ Insurance</button>` : `<span class="text-[11px] text-gray-400 italic py-1">No Ins.</span>`;
 
                     gridHtml += `
-                        <div class="bg-white rounded-xl shadow-sm border-t-4 ${isOverdue?'border-rose-500 animate-pulse-border':'border-emerald-500'} p-5 flex flex-col justify-between">
+                        <div class="${isDarkMode ? 'bg-[#1e293b] border-gray-700' : 'bg-white'} rounded-xl shadow-sm border-t-4 ${isOverdue?'border-rose-500 animate-pulse-border':'border-emerald-500'} p-5 flex flex-col justify-between">
                             <div>
                                 <div class="flex justify-between items-start mb-3 gap-2">
                                     <div class="flex-1">
-                                        <h3 class="text-base sm:text-lg font-bold text-gray-800 break-words leading-tight">${item.model}</h3>
+                                        <h3 class="text-base sm:text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'} break-words leading-tight">${item.model}</h3>
                                         <p class="text-[11px] text-gray-400 font-mono">Plate: ${item.plate}</p>
-                                        
-                                        <div class="bg-slate-50 border p-2 rounded-lg mt-1.5 flex justify-between items-center">
-                                            <div class="truncate mr-1">
-                                                <span class="text-[11px] font-bold text-slate-700 block truncate">👤 ${item.driver}</span>
-                                                <span class="text-[10px] font-mono text-gray-400 block">${item.driverPhone || 'Walang Numero'}</span>
-                                            </div>
-                                            <div class="flex gap-1 shrink-0">
-                                                <button onclick="pingDriver('${item.id}', 'chat')" title="Send WhatsApp/Viber Advisory" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] px-2 py-1 font-bold rounded flex items-center gap-0.5">💬 Ping</button>
-                                                <button onclick="pingDriver('${item.id}', 'all')" title="Call/SMS Driver" class="bg-gray-200 hover:bg-gray-300 text-slate-700 text-[11px] px-1.5 py-1 font-bold rounded">📞</button>
-                                            </div>
-                                        </div>
+                                        <p class="text-xs font-bold ${isDarkMode ? 'text-gray-300' : 'text-slate-700'} mt-1">👤 Driver: ${item.driver}</p>
                                     </div>
                                     <div class="flex flex-col items-end gap-1.5 shrink-0">
                                         <span class="text-xs font-bold px-2.5 py-1 rounded-md ${isOverdue?'bg-rose-100 text-rose-800':'bg-emerald-100 text-emerald-800'}">${metrics.status}</span>
@@ -540,49 +512,49 @@
 
                                 ${alertNotice}
 
-                                <div class="mb-4 bg-slate-50 border border-gray-100 p-2 rounded-lg">
-                                    <div class="flex justify-between text-[10px] font-bold text-gray-500 mb-1 uppercase tracking-wide">
+                                <div class="mb-4 ${isDarkMode ? 'bg-slate-800/50 border-gray-700' : 'bg-slate-50 border-gray-100'} border p-2 rounded-lg">
+                                    <div class="flex justify-between text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wide">
                                         <span>PMS Mileage Used</span>
-                                        <span class="${isOverdue?'text-rose-600':percentage>=85?'text-amber-600':'text-emerald-600'}">${percentage}%</span>
+                                        <span class="${isOverdue?'text-rose-500':percentage>=85?'text-amber-500':'text-emerald-500'}">${percentage}%</span>
                                     </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                                    <div class="w-full bg-gray-200 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'} rounded-full h-2.5 overflow-hidden">
                                         <div class="${barColor} h-2.5 rounded-full transition-all duration-500" style="width: ${barWidth}%"></div>
                                     </div>
                                 </div>
 
-                                <div class="space-y-2 text-xs border-b pb-3 mb-3">
+                                <div class="space-y-2 text-xs border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pb-3 mb-3">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-gray-500">Current Mileage:</span>
-                                        <span class="font-bold bg-slate-100 px-2.5 py-1 rounded text-slate-900 text-xs">${item.currentOdo.toLocaleString()} KM</span>
+                                        <span class="text-gray-400">Current Mileage:</span>
+                                        <span class="font-bold ${isDarkMode ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-900'} px-2.5 py-1 rounded text-xs">${item.currentOdo.toLocaleString()} KM</span>
                                     </div>
                                     <div class="flex justify-between items-center">
-                                        <span class="text-gray-500">Target Mileage PMS:</span>
-                                        <span class="text-rose-600 font-bold">${item.targetOdo.toLocaleString()} KM</span>
+                                        <span class="text-gray-400">Target Mileage PMS:</span>
+                                        <span class="text-rose-500 font-bold">${item.targetOdo.toLocaleString()} KM</span>
                                     </div>
                                     <div class="flex justify-between items-center">
-                                        <span class="text-gray-500">Target Deadline Date:</span>
-                                        <span class="font-bold text-gray-700">${item.targetDue}</span>
+                                        <span class="text-gray-400">Target Deadline Date:</span>
+                                        <span class="font-bold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}">${item.targetDue}</span>
                                     </div>
-                                    <div class="flex justify-between items-center text-emerald-600 font-bold">
+                                    <div class="flex justify-between items-center text-emerald-500 font-bold">
                                         <span>Total Expenses:</span>
-                                        <span class="bg-emerald-50 px-2 py-0.5 rounded">₱${(item.totalExpenses || 0).toLocaleString()}</span>
+                                        <span class="${isDarkMode ? 'bg-emerald-950/30' : 'bg-emerald-5'} px-2 py-0.5 rounded">₱${(item.totalExpenses || 0).toLocaleString()}</span>
                                     </div>
                                 </div>
 
-                                <div class="flex gap-2 bg-slate-50 p-2 rounded-lg justify-around mb-3 items-center border border-dashed">
+                                <div class="${isDarkMode ? 'bg-slate-800/50 border-gray-700' : 'bg-slate-50 border-gray-200'} flex gap-2 p-2 rounded-lg justify-around mb-3 items-center border border-dashed">
                                     ${orcrBadge}
                                     ${insBadge}
                                 </div>
 
-                                <div class="border-t pt-2">
-                                    <input type="text" id="logSearch_${item.id}" oninput="filterItemLogs('${item.id}')" placeholder="Search past logs details..." class="w-full text-xs px-2.5 py-1.5 border rounded-lg bg-slate-50 mb-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400">
-                                    <div id="logContainer_${item.id}" class="max-h-24 overflow-y-auto bg-slate-50 p-2 rounded-lg text-[11px]">
+                                <div class="border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-2">
+                                    <input type="text" id="logSearch_${item.id}" oninput="filterItemLogs('${item.id}')" placeholder="Search past logs details..." class="w-full text-xs px-2.5 py-1.5 border rounded-lg ${isDarkMode ? 'bg-slate-800 border-gray-700 text-white' : 'bg-slate-50 border-gray-200'} mb-1.5 focus:outline-none">
+                                    <div id="logContainer_${item.id}" class="max-h-24 overflow-y-auto ${isDarkMode ? 'bg-slate-800/40 text-gray-300' : 'bg-slate-50 text-gray-700'} p-2 rounded-lg text-[11px]">
                                         ${historicalLogsHtml || "<span class='text-gray-400 text-[10px] block text-center py-2'>No past service logs encoded.</span>"}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex justify-between gap-2 mt-4 pt-3 border-t items-center">
+                            <div class="flex justify-between gap-2 mt-4 pt-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} items-center">
                                 <button onclick="openDonePmsModal('${item.id}')" class="bg-[#10b981] hover:bg-[#059669] text-white text-xs px-4 py-2.5 rounded-lg font-bold shadow-xs flex-1 transition-all">✔ Log Done PMS</button>
                                 <div class="flex gap-1.5 shrink-0">
                                     <button onclick="openSlip('${item.id}')" class="bg-sky-100 hover:bg-sky-200 text-sky-800 text-xs px-3 py-2.5 rounded-lg font-bold">🖨️ Slip</button>
@@ -594,6 +566,54 @@
                     `;
                 });
                 gridHtml += "</div>"; targetContainer.innerHTML = gridHtml;
+            }
+            applyThemeClasses();
+        }
+
+        // 🌓 DARK MODE THEME CONTROLLER ENGINE
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('pms_dark_mode', isDarkMode);
+            applyThemeClasses();
+            renderFleet();
+        }
+
+        function applyThemeClasses() {
+            const body = document.getElementById('bodyEngine');
+            const toggleBtn = document.getElementById('darkModeBtn');
+            
+            if (isDarkMode) {
+                body.classList.replace('bg-[#eef2f5]', 'bg-[#0f172a]');
+                body.classList.add('text-white');
+                toggleBtn.innerHTML = "☀️ <span>Light Mode</span>";
+                toggleBtn.className = "bg-slate-800 hover:bg-slate-700 border-gray-700 text-white font-bold px-3 py-2 rounded-lg text-xs shadow-sm flex items-center gap-2 transition-all shrink-0";
+                
+                // Text Updates
+                document.querySelectorAll('.data-theme-text').forEach(el => { el.classList.remove('text-[#1e293b]', 'text-slate-800', 'text-slate-700', 'text-slate-600'); el.classList.add('text-white'); });
+                document.querySelectorAll('.data-theme-subtext').forEach(el => { el.classList.remove('text-gray-500'); el.classList.add('text-gray-400'); });
+                
+                // Cards & Badges
+                document.querySelectorAll('.data-theme-card').forEach(el => { el.classList.remove('bg-white'); el.classList.add('bg-[#1e293b]', 'border-gray-700'); });
+                document.querySelectorAll('.data-theme-badge').forEach(el => { el.classList.remove('bg-slate-200', 'text-slate-800'); el.classList.add('bg-slate-800', 'text-gray-200'); });
+                document.querySelectorAll('.data-theme-layout-badge').forEach(el => { el.classList.remove('bg-blue-100', 'text-blue-800'); el.classList.add('bg-blue-950', 'text-blue-300'); });
+                
+                // Controls & Inputs
+                document.querySelectorAll('.data-theme-btn').forEach(el => { el.className = el.className.replace('bg-white hover:bg-gray-100 border text-gray-700', 'bg-[#1e293b] hover:bg-slate-800 border-gray-700 text-gray-200'); });
+                document.querySelectorAll('.data-theme-input').forEach(el => { el.classList.remove('bg-white', 'border-gray-300'); el.classList.add('bg-slate-800', 'border-gray-700', 'text-white'); });
+                
+                // Modals
+                document.querySelectorAll('.data-theme-modal').forEach(el => { el.classList.remove('bg-white'); el.classList.add('bg-[#0f172a]', 'border', 'border-gray-800'); });
+                document.querySelectorAll('.data-theme-subcard').forEach(el => { el.classList.remove('bg-slate-50'); el.classList.add('bg-slate-900/50', 'border-gray-800'); });
+                document.querySelectorAll('.data-theme-advisory').forEach(el => { el.classList.remove('bg-blue-50', 'text-blue-900', 'border-blue-200'); el.classList.add('bg-blue-950/40', 'text-blue-200', 'border-blue-900'); });
+            } else {
+                body.classList.replace('bg-[#0f172a]', 'bg-[#eef2f5]');
+                body.classList.remove('text-white');
+                toggleBtn.innerHTML = "🌙 <span>Dark Mode</span>";
+                toggleBtn.className = "bg-white hover:bg-gray-100 border text-gray-700 font-bold px-3 py-2 rounded-lg text-xs shadow-sm flex items-center gap-2 transition-all shrink-0";
+                
+                // Revert Text
+                document.querySelectorAll('.data-theme-text').forEach(el => { el.classList.remove('text-white'); });
+                document.querySelectorAll('.data-theme-subtext').forEach(el => { el.classList.remove('text-gray-400'); });
             }
         }
 
@@ -610,7 +630,6 @@
                     document.getElementById('formModel').value = item.model;
                     document.getElementById('formPlate').value = item.plate;
                     document.getElementById('formDriver').value = item.driver || '';
-                    document.getElementById('formDriverPhone').value = item.driverPhone || '';
                     document.getElementById('formCurrentOdo').value = item.currentOdo;
                     document.getElementById('formOdoInterval').value = item.odoInterval || 10000;
                     document.getElementById('formTargetOdo').value = item.targetOdo;
@@ -622,6 +641,7 @@
                 }
             }
             document.getElementById('equipmentModal').classList.replace('hidden', 'flex');
+            applyThemeClasses();
         }
         function closeEquipmentModal() { document.getElementById('equipmentModal').classList.replace('flex', 'hidden'); }
 
@@ -631,7 +651,6 @@
             const model = document.getElementById('formModel').value;
             const plate = document.getElementById('formPlate').value;
             const driver = document.getElementById('formDriver').value || 'Unassigned';
-            const driverPhone = document.getElementById('formDriverPhone').value || '';
             const currentOdo = parseInt(document.getElementById('formCurrentOdo').value);
             const odoInterval = parseInt(document.getElementById('formOdoInterval').value);
             const targetOdo = parseInt(document.getElementById('formTargetOdo').value);
@@ -648,13 +667,13 @@
                 const idx = fleet.findIndex(f => f.id === id);
                 if(idx !== -1) {
                     fleet[idx] = { 
-                        ...fleet[idx], model, plate, driver, driverPhone, currentOdo, odoInterval, targetOdo, lastPmsDate, targetDue, interval,
+                        ...fleet[idx], model, plate, driver, currentOdo, odoInterval, targetOdo, lastPmsDate, targetDue, interval,
                         orcrDoc: orcrDoc || fleet[idx].orcrDoc,
                         insuranceDoc: insuranceDoc || fleet[idx].insuranceDoc
                     };
                 }
             } else {
-                fleet.push({ id: "UNIT-" + (new Date().getTime()).toString(), model, plate, driver, driverPhone, currentOdo, odoInterval, targetOdo, lastPmsOdo: currentOdo, lastPmsDate, targetDue, interval, totalExpenses: 0, orcrDoc, insuranceDoc, logs: [] });
+                fleet.push({ id: "UNIT-" + (new Date().getTime()).toString(), model, plate, driver, currentOdo, odoInterval, targetOdo, lastPmsOdo: currentOdo, lastPmsDate, targetDue, interval, totalExpenses: 0, orcrDoc, insuranceDoc, logs: [] });
             }
             saveState(); closeEquipmentModal(); renderFleet();
         }
@@ -669,6 +688,7 @@
             document.getElementById('pmsIncharge').value = item.driver || "";
             evaluateAutoRecommendations(item.currentOdo);
             document.getElementById('donePmsModal').classList.replace('hidden', 'flex');
+            applyThemeClasses();
         }
         function closeDonePmsModal() { document.getElementById('donePmsModal').classList.replace('flex', 'hidden'); }
 
