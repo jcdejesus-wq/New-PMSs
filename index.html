@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fleet PMS Monitor & Logistics Pro Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -49,100 +49,109 @@
 </head>
 <body class="bg-[#eef2f5] font-sans text-gray-800 antialiased min-h-screen pb-12">
 
-    <div id="alertBanner" class="hidden no-print w-full bg-rose-600 text-white text-center py-2 px-4 text-xs font-bold tracking-wide shadow-md flex items-center justify-center gap-2 transition-all">
+    <div id="alertBanner" class="hidden no-print w-full bg-rose-600 text-white text-center py-2.5 px-4 text-xs font-bold tracking-wide shadow-md flex items-center justify-center gap-2 transition-all">
         <span>🚨 ALERT: May mga fleet units na nangangailangan ng agarang maintenance! Paki-tsek ang mga OVERDUE na sasakyan sa ibaba.</span>
     </div>
 
-    <div class="text-center py-6 no-print">
-        <h1 class="text-2xl font-bold flex items-center justify-center gap-2 text-[#1e293b]">
-            ⚙️ Fleet & Vehicle PMS Monitor <span class="text-xs bg-purple-600 text-white font-mono px-2 py-0.5 rounded-full">v8.5 Enterprise Pro Suite</span>
+    <div class="text-center py-6 px-4 no-print">
+        <h1 class="text-xl sm:text-2xl font-bold flex flex-wrap items-center justify-center gap-2 text-[#1e293b]">
+            ⚙️ Fleet & Vehicle PMS Monitor <span class="text-[10px] sm:text-xs bg-slate-800 text-white font-mono px-2 py-0.5 rounded-full">v9.0 Comm Pro</span>
         </h1>
-        <p class="text-xs text-gray-500 mt-1 font-medium">Rule: Odometer vs Months — Complete Logistics Maintenance Suite</p>
+        <p class="text-[11px] sm:text-xs text-gray-500 mt-1 font-medium">Odometer vs Months — Integrated with One-Click Driver Dispatch Ping</p>
     </div>
 
     <div class="max-w-[1550px] mx-auto px-4 no-print">
         
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-            <div onclick="setFilter('ALL')" id="btnFilterAll" class="bg-white p-4 rounded-xl shadow-sm border-l-[6px] border-slate-700 flex flex-col justify-between h-24 cursor-pointer hover:scale-[1.02] transition-all ring-2 ring-slate-700 col-span-1">
-                <span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Total Fleet</span>
-                <span id="statTotal" class="text-3xl font-bold text-center text-slate-800">0</span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <div onclick="setFilter('ALL')" id="btnFilterAll" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-slate-700 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all ring-2 ring-slate-700">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Total Fleet</span>
+                <span id="statTotal" class="text-2xl sm:text-3xl font-bold text-center text-slate-800">0</span>
             </div>
-            <div onclick="setFilter('GOOD')" id="btnFilterGood" class="bg-white p-4 rounded-xl shadow-sm border-l-[6px] border-emerald-500 flex flex-col justify-between h-24 cursor-pointer hover:scale-[1.02] transition-all col-span-1">
-                <span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Good Status</span>
-                <span id="statGood" class="text-3xl font-bold text-center text-emerald-600">0</span>
+            <div onclick="setFilter('GOOD')" id="btnFilterGood" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-emerald-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Good Status</span>
+                <span id="statGood" class="text-2xl sm:text-3xl font-bold text-center text-emerald-600">0</span>
             </div>
-            <div onclick="setFilter('DUE SOON')" id="btnFilterDue" class="bg-white p-4 rounded-xl shadow-sm border-l-[6px] border-amber-500 flex flex-col justify-between h-24 cursor-pointer hover:scale-[1.02] transition-all col-span-1">
-                <span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Due Soon</span>
-                <span id="statDue" class="text-3xl font-bold text-center text-amber-600">0</span>
+            <div onclick="setFilter('DUE SOON')" id="btnFilterDue" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-amber-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Due Soon</span>
+                <span id="statDue" class="text-2xl sm:text-3xl font-bold text-center text-amber-600">0</span>
             </div>
-            <div onclick="setFilter('OVERDUE')" id="btnFilterOverdue" class="bg-white p-4 rounded-xl shadow-sm border-l-[6px] border-rose-500 flex flex-col justify-between h-24 cursor-pointer hover:scale-[1.02] transition-all col-span-1">
-                <span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Overdue</span>
-                <span id="statOverdue" class="text-3xl font-bold text-center text-rose-600">0</span>
+            <div onclick="setFilter('OVERDUE')" id="btnFilterOverdue" class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border-l-[6px] border-rose-500 flex flex-col justify-between h-20 sm:h-24 cursor-pointer hover:scale-[1.02] transition-all">
+                <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-gray-500 uppercase block text-center w-full">Overdue</span>
+                <span id="statOverdue" class="text-2xl sm:text-3xl font-bold text-center text-rose-600">0</span>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-3 justify-between items-center mb-6">
-            <div class="w-full md:w-1/3 flex gap-2">
-                <input type="text" id="searchInput" oninput="renderFleet()" placeholder="Search Unit, Plate, or Driver..." 
-                       class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white shadow-sm">
+        <div class="flex flex-col gap-3 justify-between items-center mb-6 lg:flex-row">
+            <div class="w-full lg:w-1/3 flex gap-2">
+                <div class="relative w-full">
+                    <input type="text" id="searchInput" oninput="renderFleet()" placeholder="Search Unit, Plate, or Driver..." 
+                           class="w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white shadow-sm">
+                    <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 font-bold text-sm">×</button>
+                </div>
                 
-                <button onclick="toggleLayoutView()" id="viewToggleBtn" class="bg-white hover:bg-gray-100 border text-gray-700 font-bold px-3 py-2 rounded-lg text-sm shadow-sm flex items-center gap-1">
+                <button onclick="toggleLayoutView()" id="viewToggleBtn" class="bg-white hover:bg-gray-100 border text-gray-700 font-bold px-3 py-2.5 rounded-lg text-xs sm:text-sm shadow-sm flex items-center gap-1 shrink-0">
                     📋 <span id="viewToggleLabel">Table View</span>
                 </button>
             </div>
             
-            <div class="flex flex-wrap gap-2 w-full md:w-auto justify-end items-center">
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full lg:w-auto justify-end items-center">
                 <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="handleImportFile(event)">
-                <button onclick="document.getElementById('importFileInput').click()" class="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-sm">📥 Import JSON</button>
-                <button onclick="exportReport()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-sm">🕹 Export JSON</button>
-                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-sm flex items-center gap-1">📊 Export Excel (.xlsx)</button>
-                <button onclick="openEquipmentModal()" class="bg-[#1e293b] hover:bg-[#0f172a] text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-sm">➕ Add Equipment</button>
+                <button onclick="document.getElementById('importFileInput').click()" class="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-semibold px-3 py-2.5 rounded-lg shadow-sm text-center">📥 Import JSON</button>
+                <button onclick="exportReport()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2.5 rounded-lg shadow-sm text-center">🕹 Export JSON</button>
+                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2.5 rounded-lg shadow-sm flex items-center justify-center gap-1 text-center col-span-2 sm:col-span-1">📊 Export Excel (.xlsx)</button>
+                <button onclick="openEquipmentModal()" class="bg-[#1e293b] hover:bg-[#0f172a] text-white text-xs font-semibold px-3 py-2.5 rounded-lg shadow-sm text-center col-span-2 sm:col-span-1">➕ Add Equipment</button>
             </div>
         </div>
 
-        <div class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider flex justify-between items-center">
+        <div class="text-[11px] sm:text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider flex justify-between items-center">
             <div>Active Filter: <span id="activeFilterLabel" class="text-slate-800 bg-slate-200 px-2 py-0.5 rounded">All Fleet Units</span></div>
-            <div id="layoutBadgeIndicator" class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-mono uppercase">GRID CARD MODE</div>
+            <div id="layoutBadgeIndicator" class="text-[9px] sm:text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-mono uppercase">GRID CARD MODE</div>
         </div>
 
         <div id="displayContainer" class="w-full"></div>
     </div>
 
     <div id="equipmentModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden items-center justify-center z-50 p-4 no-print">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 relative max-h-[95vh] overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 sm:p-6 relative max-h-[95vh] overflow-y-auto">
             <button onclick="closeEquipmentModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
-            <h2 id="modalTitle" class="text-lg font-bold text-slate-800 border-b pb-2 mb-4">Add Equipment</h2>
+            <h2 id="modalTitle" class="text-base sm:text-lg font-bold text-slate-800 border-b pb-2 mb-4">Add Equipment</h2>
             
             <form id="fleetForm" onsubmit="saveEquipment(event)" class="space-y-4 text-sm">
                 <input type="hidden" id="editId">
                 
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Equipment / Vehicle Name:</label>
-                        <input type="text" id="formModel" required placeholder="e.g., Toyota Vios" class="w-full border px-3 py-2 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-slate-800">
+                        <input type="text" id="formModel" required placeholder="e.g., Toyota Vios" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Plate Number / ID:</label>
-                        <input type="text" id="formPlate" required placeholder="e.g., NDG 1234" class="w-full border px-3 py-2 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-slate-800">
+                        <input type="text" id="formPlate" required placeholder="e.g., NDG 1234" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Assigned Driver / Handler:</label>
-                    <input type="text" id="formDriver" placeholder="e.g., Juan Dela Cruz" class="w-full border px-3 py-2 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-slate-800">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Assigned Driver:</label>
+                        <input type="text" id="formDriver" placeholder="e.g., Juan Dela Cruz" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Driver Mobile No.:</label>
+                        <input type="text" id="formDriverPhone" placeholder="e.g., 09171234567" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-800">
+                    </div>
                 </div>
 
                 <div class="border rounded-lg p-3 bg-slate-50 space-y-2">
                     <span class="text-xs font-bold text-slate-700 flex items-center gap-1">📁 Digital Document Vault (Base64)</span>
-                    <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                         <div>
                             <label class="block text-[10px] font-semibold text-gray-500">OR/CR Scanned Copy:</label>
-                            <input type="file" id="formFileOrcr" onchange="encodeDocFile(this, 'orcr')" class="w-full text-[10px] bg-white border rounded p-1">
+                            <input type="file" id="formFileOrcr" onchange="encodeDocFile(this, 'orcr')" class="w-full text-[11px] bg-white border rounded p-1.5 sm:p-1">
                             <input type="hidden" id="formHideOrcr">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold text-gray-500">Insurance Policy:</label>
-                            <input type="file" id="formFileInsurance" onchange="encodeDocFile(this, 'insurance')" class="w-full text-[10px] bg-white border rounded p-1">
+                            <input type="file" id="formFileInsurance" onchange="encodeDocFile(this, 'insurance')" class="w-full text-[11px] bg-white border rounded p-1.5 sm:p-1">
                             <input type="hidden" id="formHideInsurance">
                         </div>
                     </div>
@@ -150,14 +159,14 @@
 
                 <div class="border-t pt-2">
                     <span class="text-xs font-bold text-blue-600 block mb-2">📊 BASIS 1: ODOMETER INTERVAL</span>
-                    <div class="grid grid-cols-2 gap-2 mb-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
                         <div>
                             <label class="block text-xs font-bold text-slate-600 mb-1">Current Odometer (KM):</label>
-                            <input type="number" id="formCurrentOdo" oninput="autoCalcTargetOdo()" required class="w-full border px-3 py-2 rounded-lg text-gray-700 bg-white">
+                            <input type="number" id="formCurrentOdo" oninput="autoCalcTargetOdo()" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-600 mb-1">Odo Cycle Interval:</label>
-                            <select id="formOdoInterval" onchange="autoCalcTargetOdo()" class="w-full border px-3 py-2 rounded-lg text-gray-700 bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8">
+                            <select id="formOdoInterval" onchange="autoCalcTargetOdo()" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-gray-700 bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8">
                                 <option value="5000">Every 5,000 KM</option>
                                 <option value="10000" selected>Every 10,000 KM</option>
                                 <option value="15000">Every 15,000 KM</option>
@@ -166,20 +175,20 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 mb-1">Target PMS Odometer (KM):</label>
-                        <input type="number" id="formTargetOdo" required class="w-full border px-3 py-2 rounded-lg bg-white">
+                        <input type="number" id="formTargetOdo" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white">
                     </div>
                 </div>
 
                 <div class="border-t pt-2">
                     <span class="text-xs font-bold text-blue-600 block mb-2">📅 BASIS 2: TIMEFRAME (MONTHS)</span>
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-bold text-slate-600 mb-1">Last PMS Date:</label>
-                            <input type="date" id="formLastPmsDate" required class="w-full border px-3 py-2 rounded-lg bg-white">
+                            <input type="date" id="formLastPmsDate" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-600 mb-1">Time Interval Cycle:</label>
-                            <select id="formInterval" class="w-full border px-3 py-2 rounded-lg bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8">
+                            <select id="formInterval" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg bg-white appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-[right_12px_center] bg-no-repeat pr-8">
                                 <option value="3">Every 3 Months</option>
                                 <option value="6" selected>Every 6 Months</option>
                                 <option value="12">Every 12 Months</option>
@@ -189,16 +198,16 @@
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full bg-[#1e293b] hover:bg-[#111827] text-white font-bold py-2.5 px-4 rounded-lg shadow-sm">Save Equipment</button>
+                    <button type="submit" class="w-full bg-[#1e293b] hover:bg-[#111827] text-white font-bold py-3 px-4 rounded-lg shadow-sm">Save Equipment</button>
                 </div>
             </form>
         </div>
     </div>
 
     <div id="donePmsModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden items-center justify-center z-50 p-4 no-print">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 relative max-h-[95vh] overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 sm:p-6 relative max-h-[95vh] overflow-y-auto">
             <button onclick="closeDonePmsModal()" class="absolute top-4 right-4 text-gray-400 text-xl font-bold">×</button>
-            <h2 class="text-lg font-bold text-emerald-600 mb-1 flex items-center gap-2">✅ Log Done PMS</h2>
+            <h2 class="text-base sm:text-lg font-bold text-emerald-600 mb-1 flex items-center gap-2">✅ Log Done PMS</h2>
             <p class="text-xs text-gray-500 mb-4">Enter service info below. Old limits automatically push forward.</p>
 
             <div id="autoRecommendationBox" class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-3 text-xs mb-3 font-semibold space-y-1"></div>
@@ -207,58 +216,62 @@
                 <input type="hidden" id="pmsVehicleId">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Current Odometer Now (KM):</label>
-                    <input type="number" id="pmsCurrentOdo" oninput="autoCalcNextTargetOdo()" required class="w-full border px-3 py-2 rounded-lg">
+                    <input type="number" id="pmsCurrentOdo" oninput="autoCalcNextTargetOdo()" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">New Target Odometer for NEXT PMS (KM):</label>
-                    <input type="number" id="pmsTargetOdo" required class="w-full border px-3 py-2 rounded-lg">
+                    <input type="number" id="pmsTargetOdo" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Date PMS was Performed:</label>
-                    <input type="date" id="pmsDate" required class="w-full border px-3 py-2 rounded-lg">
+                    <input type="date" id="pmsDate" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Driver / Personnel-in-Charge:</label>
-                    <input type="text" id="pmsIncharge" required class="w-full border px-3 py-2 rounded-lg">
+                    <input type="text" id="pmsIncharge" required class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
                 </div>
 
                 <div class="border rounded-lg p-3 bg-white space-y-2">
                     <span class="text-xs font-bold text-slate-700 flex items-center gap-1">🖋 Services & Replacements Performed:</span>
-                    <div class="grid grid-cols-2 gap-2 text-xs font-semibold text-gray-600">
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Change Oil" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Change Oil</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Brake Pads/Fluid" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Brake Pads/Fluid</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Spark Plugs" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Spark Plugs</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Air/Fuel Filters" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Air/Fuel Filters</label>
-                        <label class="flex items-center gap-2 col-span-2"><input type="checkbox" value="Tire Alignment" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Tire Alignment</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-gray-600">
+                        <label class="flex items-center gap-2 py-1"><input type="checkbox" value="Change Oil" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Change Oil</label>
+                        <label class="flex items-center gap-2 py-1"><input type="checkbox" value="Brake Pads/Fluid" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Brake Pads/Fluid</label>
+                        <label class="flex items-center gap-2 py-1"><input type="checkbox" value="Spark Plugs" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Spark Plugs</label>
+                        <label class="flex items-center gap-2 py-1"><input type="checkbox" value="Air/Fuel Filters" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Air/Fuel Filters</label>
+                        <label class="flex items-center gap-2 py-1 col-span-1 sm:col-span-2"><input type="checkbox" value="Tire Alignment" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"> Tire Alignment</label>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Total PMS Service Cost (₱):</label>
-                    <input type="number" id="pmsCost" placeholder="0" class="w-full border px-3 py-2 rounded-lg">
+                    <input type="number" id="pmsCost" placeholder="0" class="w-full border px-3 py-2.5 sm:py-2 rounded-lg text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Service Remarks / Notes (Optional):</label>
-                    <textarea id="pmsNotes" placeholder="e.g., Mechanic found minor leak but fixed already" class="w-full border px-3 py-2 rounded-lg h-16"></textarea>
+                    <textarea id="pmsNotes" placeholder="e.g., Mechanic found minor leak but fixed already" class="w-full border px-3 py-2 rounded-lg h-16 text-sm"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-[#10b981] hover:bg-[#059669] text-white font-bold py-2.5 px-4 rounded-lg shadow-md transition-all">Update & Save to History</button>
+                <button type="submit" class="w-full bg-[#10b981] hover:bg-[#059669] text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all text-sm">Update & Save to History</button>
             </form>
         </div>
     </div>
 
     <div id="slipModalOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-xs hidden items-center justify-center z-50 p-4">
-        <div id="printSlipArea" class="bg-white border-2 border-slate-800 p-8 max-w-xl w-full text-xs font-mono text-slate-900 relative">
-            <button onclick="closeSlipModal()" class="absolute top-3 right-3 text-gray-400 font-bold no-print">×</button>
+        <div id="printSlipArea" class="bg-white border-2 border-slate-800 p-5 sm:p-8 max-w-xl w-full text-xs font-mono text-slate-900 relative max-h-[95vh] overflow-y-auto">
+            <button onclick="closeSlipModal()" class="absolute top-3 right-3 text-gray-400 font-bold no-print text-lg">×</button>
             <div class="text-center border-b-2 border-double border-slate-800 pb-4 mb-4">
-                <h2 class="text-lg font-black tracking-widest">LOGISTICS MAINTENANCE & GATE PASS</h2>
+                <h2 class="text-sm sm:text-lg font-black tracking-widest">LOGISTICS MAINTENANCE & GATE PASS</h2>
                 <p id="slipGeneratedTime" class="text-[9px] text-gray-400 mt-1"></p>
             </div>
-            <div class="grid grid-cols-2 gap-2 border-b pb-4 mb-4">
-                <div>Equipment: <strong id="slipVehicle">—</strong></div>
-                <div>Plate/ID: <strong id="slipPlate">—</strong></div>
-                <div class="col-span-2">Assigned Driver: <strong id="slipDriver">—</strong></div>
+            
+            <div class="border-b pb-4 mb-4">
+                <div class="grid grid-cols-1 gap-1.5 w-full">
+                    <div>Equipment: <strong id="slipVehicle">—</strong></div>
+                    <div>Plate/ID: <strong id="slipPlate">—</strong></div>
+                    <div>Assigned Driver: <strong id="slipDriver">—</strong></div>
+                </div>
             </div>
-            <div class="grid grid-cols-2 gap-2 border-b pb-4 mb-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 border-b pb-4 mb-4">
                 <div>Current Mileage: <span id="slipCurrentOdo">—</span></div>
                 <div>Next Target Mileage: <span id="slipTargetOdo" class="text-rose-600 font-bold">—</span></div>
                 <div>Last Service Date: <span id="slipLastDate">—</span></div>
@@ -267,13 +280,13 @@
             <h3 class="text-[10px] font-black uppercase bg-slate-100 p-1 mb-2">⚙ Recommended Scope Checklist</h3>
             <div id="slipRecommendedScope" class="space-y-1 pl-1 mb-6 text-slate-700"></div>
             
-            <div class="grid grid-cols-3 gap-4 text-center text-[10px] pt-4 border-t border-slate-900 pt-1">
+            <div class="grid grid-cols-3 gap-2 text-center text-[9px] sm:text-[10px] pt-4 border-t border-slate-900">
                 <div class="border-t border-slate-900 pt-1" id="slipSignDriver">DRIVER SIGNATURE</div>
                 <div class="border-t border-slate-900 pt-1">PREPARED BY</div>
                 <div class="border-t border-slate-900 pt-1">APPROVED BY</div>
             </div>
             <div class="mt-6 text-center no-print flex gap-2">
-                <button onclick="window.print()" class="w-full bg-slate-800 text-white font-bold py-2 rounded text-xs shadow-md">Print Official Slip</button>
+                <button onclick="window.print()" class="w-full bg-slate-800 text-white font-bold py-2.5 rounded text-xs shadow-md">Print Official Slip</button>
                 <button onclick="closeSlipModal()" class="bg-gray-200 px-4 rounded text-xs hover:bg-gray-300">Close</button>
             </div>
         </div>
@@ -281,8 +294,8 @@
 
     <script>
         const defaultFleet = [
-            { id: "1", model: "Toyota Land Cruiser", plate: "AXA 2845", driver: "Danilo Santos", currentOdo: 84200, targetOdo: 84000, lastPmsOdo: 74000, lastPmsDate: "2026-01-15", targetDue: "2026-07-15", interval: 6, odoInterval: 10000, totalExpenses: 15000, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-01-15", odo:74000, cost:15000, incharge:"Danilo Santos", notes:"Full Oil change package performed."}] },
-            { id: "2", model: "L300 Exceed Van", plate: "NDG 5612", driver: "Juan Dela Cruz", currentOdo: 99500, targetOdo: 109500, lastPmsOdo: 99500, lastPmsDate: "2026-05-20", targetDue: "2026-11-20", interval: 6, odoInterval: 10000, totalExpenses: 25674, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-05-20", odo:99500, cost:25674, incharge:"Juan Dela Cruz", notes:"Brake fluid swap + standard filters alignment."}] }
+            { id: "1", model: "Toyota Land Cruiser", plate: "AXA 2845", driver: "Danilo Santos", driverPhone: "09171234567", currentOdo: 84200, targetOdo: 84000, lastPmsOdo: 74000, lastPmsDate: "2026-01-15", targetDue: "2026-07-15", interval: 6, odoInterval: 10000, totalExpenses: 15000, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-01-15", odo:74000, cost:15000, incharge:"Danilo Santos", notes:"Full Oil change package performed."}] },
+            { id: "2", model: "L300 Exceed Van", plate: "NDG 5612", driver: "Juan Dela Cruz", driverPhone: "09189876543", currentOdo: 99500, targetOdo: 109500, lastPmsOdo: 99500, lastPmsDate: "2026-05-20", targetDue: "2026-11-20", interval: 6, odoInterval: 10000, totalExpenses: 25674, orcrDoc: "", insuranceDoc: "", logs: [{date:"2026-05-20", odo:99500, cost:25674, incharge:"Juan Dela Cruz", notes:"Brake fluid swap + standard filters alignment."}] }
         ];
 
         let fleet = JSON.parse(localStorage.getItem('pms_fleet_v8_enterprise')) || defaultFleet;
@@ -294,6 +307,12 @@
         }
         
         function toggleLayoutView() { currentLayoutView = currentLayoutView === "GRID" ? "TABLE" : "GRID"; renderFleet(); }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = "";
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderFleet();
+        }
 
         function encodeDocFile(input, field) {
             const file = input.files[0]; if (!file) return;
@@ -347,6 +366,29 @@
 
         function setFilter(statusType) { currentFilter = statusType; renderFleet(); }
 
+        /* 📲 ONE-CLICK DISPATCH DRIVER PING SYSTEM */
+        function pingDriver(id, type) {
+            const item = fleet.find(f => f.id === id);
+            if (!item || !item.driverPhone) { 
+                alert("Paalala: Walang naka-save na Mobile Number para sa driver na ito. Paki-edit muna ang profile."); 
+                return; 
+            }
+            
+            const metrics = evaluateMetrics(item);
+            let phone = item.driverPhone.replace(/[^0-9]/g, '');
+            // Convert standard local 0917 to international 63917 for WhatsApp compliance
+            if(phone.startsWith('0')) phone = '63' + phone.substring(1);
+
+            const msg = `Magandang araw ${item.driver}! Paalala mula sa Logistics Fleet Management. Ang minamaneho mong unit na ${item.model} (${item.plate}) ay nasa [${metrics.status}] status na para sa PMS maintenance. Ang kasalukuyang Odometer nito ay ${item.currentOdo.toLocaleString()} KM habang ang target PMS ay ${item.targetOdo.toLocaleString()} KM. Paki-schedule o ibalik na agad ang unit sa garahe. Salamat at mag-ingat sa biyahe!`;
+            
+            if(type === 'chat') {
+                // Generates multi-platform instant deep-link
+                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+            } else if(type === 'sms') {
+                window.open(`sms:${item.driverPhone}?body=${encodeURIComponent(msg)}`, '_blank');
+            }
+        }
+
         function filterItemLogs(itemId) {
             const item = fleet.find(f => f.id === itemId); if (!item) return;
             const searchVal = document.getElementById(`logSearch_${itemId}`).value.toLowerCase().trim();
@@ -370,6 +412,7 @@
                     "Vehicle Name/Model": f.model,
                     "Plate Number": f.plate,
                     "Assigned Driver": f.driver,
+                    "Driver Mobile No": f.driverPhone || "N/A",
                     "Current Odometer (KM)": f.currentOdo,
                     "Target PMS Limit (KM)": f.targetOdo,
                     "Last PMS Service Date": f.lastPmsDate,
@@ -388,6 +431,9 @@
         function renderFleet() {
             const targetContainer = document.getElementById('displayContainer');
             const searchStr = document.getElementById('searchInput').value.toLowerCase().trim();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            
+            if(searchStr) clearBtn.classList.remove('hidden'); else clearBtn.classList.add('hidden');
             targetContainer.innerHTML = "";
 
             let stats = { total: 0, good: 0, due: 0, overdue: 0 };
@@ -411,7 +457,7 @@
             let filteredFleet = fleet.filter(item => {
                 const metrics = evaluateMetrics(item);
                 if (currentFilter !== "ALL" && metrics.status !== currentFilter) return false;
-                if (searchStr && !item.model.toLowerCase().includes(searchStr) && !item.plate.toLowerCase().includes(searchStr) && !item.driver.toLowerCase().includes(searchStr)) return false;
+                if (searchStr && !item.model.toLowerCase().includes(searchStr) && !item.plate.toLowerCase().includes(searchStr) && !item.driver.toLowerCase().includes(searchStr) && !item.id.toLowerCase().includes(searchStr)) return false;
                 return true;
             });
 
@@ -419,83 +465,129 @@
             document.getElementById('layoutBadgeIndicator').textContent = currentLayoutView === "GRID" ? "GRID CARD MODE" : "TABLE VIEW MODE";
 
             if (currentLayoutView === "TABLE") {
-                let tableHtml = `<div class="bg-white rounded-xl border overflow-x-auto shadow-sm"><table class="w-full text-xs text-left">
-                    <thead class="bg-slate-50 border-b"><tr><th class="p-3">Unit Name</th><th class="p-3">Plate</th><th class="p-3">Driver</th><th class="p-3">Status</th><th class="p-3">Odo</th><th class="p-3 text-right">Actions</th></tr></thead><tbody>`;
+                let tableHtml = `<div class="bg-white rounded-xl border overflow-x-auto shadow-sm"><table class="w-full text-xs text-left min-w-[600px]">
+                    <thead class="bg-slate-50 border-b"><tr><th class="p-3">Unit Name</th><th class="p-3">Plate</th><th class="p-3">Driver Info</th><th class="p-3">Status</th><th class="p-3">Odo</th><th class="p-3 text-right">Actions</th></tr></thead><tbody>`;
                 filteredFleet.forEach(item => {
                     const metrics = evaluateMetrics(item);
-                    tableHtml += `<tr class="border-b">
+                    tableHtml += `<tr class="border-b hover:bg-slate-50">
                         <td class="p-3 font-bold">${item.model}</td>
                         <td class="p-3 font-mono">${item.plate}</td>
-                        <td class="p-3">${item.driver}</td>
+                        <td class="p-3">${item.driver} <span class="text-gray-400 block font-mono text-[10px]">${item.driverPhone || 'No Num'}</span></td>
                         <td class="p-3 font-bold ${metrics.status === 'OVERDUE' ? 'text-rose-600' : metrics.status === 'DUE SOON' ? 'text-amber-600' : 'text-emerald-600'}">${metrics.status}</td>
                         <td class="p-3 font-semibold">${item.currentOdo.toLocaleString()} KM</td>
                         <td class="p-3 text-right space-x-1">
-                            <button onclick="openDonePmsModal('${item.id}')" class="bg-emerald-500 text-white px-2 py-0.5 rounded text-[11px] font-bold">Done</button>
-                            <button onclick="openSlip('${item.id}')" class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded text-[11px] font-bold">Slip</button>
+                            <button onclick="pingDriver('${item.id}', 'chat')" class="bg-blue-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">💬 Ping</button>
+                            <button onclick="openDonePmsModal('${item.id}')" class="bg-emerald-500 text-white px-2 py-1 rounded text-[11px] font-bold">Done</button>
+                            <button onclick="openSlip('${item.id}')" class="bg-sky-100 text-sky-800 px-2 py-1 rounded text-[11px] font-bold">Slip</button>
                         </td>
                     </tr>`;
                 });
                 tableHtml += "</tbody></table></div>"; targetContainer.innerHTML = tableHtml;
             } else {
-                /* ⚙️ FIXED TO THREE COLUMNS (lg:grid-cols-3) FOR DESKTOP VIEWS */
                 let gridHtml = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">`;
                 filteredFleet.forEach(item => {
                     const metrics = evaluateMetrics(item);
                     const isOverdue = metrics.status === "OVERDUE";
                     
-                    let alertNotice = metrics.status !== "OVERDUE" ? `<div class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-2 text-[10px] font-bold mb-2">📢 Alert: ${metrics.odoDiff.toLocaleString()} KM o ${metrics.daysDiff} araw na lang natitira bago mag-due.</div>` : "";
+                    const lastOdo = item.lastPmsOdo || 0;
+                    const totalCycleDistance = item.targetOdo - lastOdo;
+                    const drivenSinceLastPms = item.currentOdo - lastOdo;
+                    
+                    let percentage = 0;
+                    if (totalCycleDistance > 0) {
+                        percentage = Math.round((drivenSinceLastPms / totalCycleDistance) * 100);
+                    }
+                    if (percentage < 0) percentage = 0;
+                    const barWidth = percentage > 100 ? 100 : percentage;
+
+                    let barColor = "bg-emerald-500";
+                    if (metrics.status === "DUE SOON") barColor = "bg-amber-500";
+                    if (metrics.status === "OVERDUE") barColor = "bg-rose-500";
+                    
+                    let alertNotice = metrics.status !== "OVERDUE" ? `<div class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-2.5 text-[10px] font-bold mb-3">📢 Alert: ${metrics.odoDiff.toLocaleString()} KM o ${metrics.daysDiff} araw na lang natitira bago mag-due.</div>` : "";
 
                     let historicalLogsHtml = "";
                     (item.logs || []).forEach(l => {
-                        historicalLogsHtml += `<div class="border-b py-1 text-[10px]">✔ ${l.date} (${l.odo.toLocaleString()} KM) - ₱${l.cost.toLocaleString()} by ${l.incharge || 'Staff'}<br><span class="text-gray-400 italic">${l.notes}</span></div>`;
+                        historicalLogsHtml += `<div class="border-b py-1.5 text-[10px]">✔ ${l.date} (${l.odo.toLocaleString()} KM) - ₱${l.cost.toLocaleString()} by ${l.incharge || 'Staff'}<br><span class="text-gray-400 italic">${l.notes}</span></div>`;
                     });
 
-                    let orcrBadge = item.orcrDoc ? `<button onclick="downloadDoc('${item.orcrDoc}', 'ORCR_${item.plate}.png')" class="bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded font-bold">📄 View OR/CR</button>` : `<span class="text-[10px] text-gray-400 italic">No OR/CR</span>`;
-                    let insBadge = item.insuranceDoc ? `<button onclick="downloadDoc('${item.insuranceDoc}', 'Insurance_${item.plate}.png')" class="bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded font-bold">🛡️ View Ins.</button>` : `<span class="text-[10px] text-gray-400 italic">No Ins.</span>`;
+                    let orcrBadge = item.orcrDoc ? `<button onclick="downloadDoc('${item.orcrDoc}', 'ORCR_${item.plate}.png')" class="bg-slate-800 hover:bg-slate-900 text-white text-[11px] px-3 py-1.5 rounded-lg font-bold">📄 OR/CR File</button>` : `<span class="text-[11px] text-gray-400 italic py-1">No OR/CR</span>`;
+                    let insBadge = item.insuranceDoc ? `<button onclick="downloadDoc('${item.insuranceDoc}', 'Insurance_${item.plate}.png')" class="bg-slate-800 hover:bg-slate-900 text-white text-[11px] px-3 py-1.5 rounded-lg font-bold">🛡️ Insurance</button>` : `<span class="text-[11px] text-gray-400 italic py-1">No Ins.</span>`;
 
                     gridHtml += `
                         <div class="bg-white rounded-xl shadow-sm border-t-4 ${isOverdue?'border-rose-500 animate-pulse-border':'border-emerald-500'} p-5 flex flex-col justify-between">
                             <div>
-                                <div class="flex justify-between items-start mb-2">
-                                    <div>
-                                        <h3 class="text-base font-bold text-gray-800 break-words">${item.model}</h3>
-                                        <p class="text-[11px] text-gray-400">Plate: ${item.plate}</p>
-                                        <p class="text-xs font-bold text-slate-700 mt-1">👤 Driver: ${item.driver}</p>
+                                <div class="flex justify-between items-start mb-3 gap-2">
+                                    <div class="flex-1">
+                                        <h3 class="text-base sm:text-lg font-bold text-gray-800 break-words leading-tight">${item.model}</h3>
+                                        <p class="text-[11px] text-gray-400 font-mono">Plate: ${item.plate}</p>
+                                        
+                                        <div class="bg-slate-50 border p-2 rounded-lg mt-1.5 flex justify-between items-center">
+                                            <div class="truncate mr-1">
+                                                <span class="text-[11px] font-bold text-slate-700 block truncate">👤 ${item.driver}</span>
+                                                <span class="text-[10px] font-mono text-gray-400 block">${item.driverPhone || 'Walang Numero'}</span>
+                                            </div>
+                                            <div class="flex gap-1 shrink-0">
+                                                <button onclick="pingDriver('${item.id}', 'chat')" title="Send WhatsApp/Viber Advisory" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] px-2 py-1 font-bold rounded flex items-center gap-0.5">💬 Ping</button>
+                                                <button onclick="pingDriver('${item.id}', 'all')" title="Call/SMS Driver" class="bg-gray-200 hover:bg-gray-300 text-slate-700 text-[11px] px-1.5 py-1 font-bold rounded">📞</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span class="text-xs font-bold px-2 py-0.5 rounded shrink-0 ${isOverdue?'bg-rose-100 text-rose-800':'bg-emerald-100 text-emerald-800'}">${metrics.status}</span>
+                                    <div class="flex flex-col items-end gap-1.5 shrink-0">
+                                        <span class="text-xs font-bold px-2.5 py-1 rounded-md ${isOverdue?'bg-rose-100 text-rose-800':'bg-emerald-100 text-emerald-800'}">${metrics.status}</span>
+                                    </div>
                                 </div>
 
                                 ${alertNotice}
 
-                                <div class="space-y-1 text-xs border-b pb-2 mb-2">
-                                    <div class="flex justify-between items-center">
-                                        <span>Current Mileage:</span>
-                                        <span class="font-bold bg-slate-100 px-2 py-0.5 rounded text-slate-900">${item.currentOdo.toLocaleString()} KM</span>
+                                <div class="mb-4 bg-slate-50 border border-gray-100 p-2 rounded-lg">
+                                    <div class="flex justify-between text-[10px] font-bold text-gray-500 mb-1 uppercase tracking-wide">
+                                        <span>PMS Mileage Used</span>
+                                        <span class="${isOverdue?'text-rose-600':percentage>=85?'text-amber-600':'text-emerald-600'}">${percentage}%</span>
                                     </div>
-                                    <div class="flex justify-between"><span>Target Mileage PMS:</span><span class="text-rose-600 font-bold">${item.targetOdo.toLocaleString()} KM</span></div>
-                                    <div class="flex justify-between"><span>Target Deadline Date:</span><span class="font-bold">${item.targetDue}</span></div>
-                                    <div class="flex justify-between text-emerald-600 font-bold"><span>Total Expenses:</span><span>₱${(item.totalExpenses || 0).toLocaleString()}</span></div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                                        <div class="${barColor} h-2.5 rounded-full transition-all duration-500" style="width: ${barWidth}%"></div>
+                                    </div>
                                 </div>
 
-                                <div class="flex gap-2 bg-slate-100 p-1.5 rounded-lg justify-around mb-2">
+                                <div class="space-y-2 text-xs border-b pb-3 mb-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-500">Current Mileage:</span>
+                                        <span class="font-bold bg-slate-100 px-2.5 py-1 rounded text-slate-900 text-xs">${item.currentOdo.toLocaleString()} KM</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-500">Target Mileage PMS:</span>
+                                        <span class="text-rose-600 font-bold">${item.targetOdo.toLocaleString()} KM</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-500">Target Deadline Date:</span>
+                                        <span class="font-bold text-gray-700">${item.targetDue}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-emerald-600 font-bold">
+                                        <span>Total Expenses:</span>
+                                        <span class="bg-emerald-50 px-2 py-0.5 rounded">₱${(item.totalExpenses || 0).toLocaleString()}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2 bg-slate-50 p-2 rounded-lg justify-around mb-3 items-center border border-dashed">
                                     ${orcrBadge}
                                     ${insBadge}
                                 </div>
 
                                 <div class="border-t pt-2">
-                                    <input type="text" id="logSearch_${item.id}" oninput="filterItemLogs('${item.id}')" placeholder="Search past logs details..." class="w-full text-[10px] px-2 py-0.5 border rounded bg-slate-50 mb-1">
-                                    <div id="logContainer_${item.id}" class="max-h-24 overflow-y-auto bg-slate-50 p-1.5 rounded text-[11px]">
-                                        ${historicalLogsHtml || "<span class='text-gray-400 text-[10px] block text-center'>No past service logs encoded.</span>"}
+                                    <input type="text" id="logSearch_${item.id}" oninput="filterItemLogs('${item.id}')" placeholder="Search past logs details..." class="w-full text-xs px-2.5 py-1.5 border rounded-lg bg-slate-50 mb-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400">
+                                    <div id="logContainer_${item.id}" class="max-h-24 overflow-y-auto bg-slate-50 p-2 rounded-lg text-[11px]">
+                                        ${historicalLogsHtml || "<span class='text-gray-400 text-[10px] block text-center py-2'>No past service logs encoded.</span>"}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex justify-between gap-1 mt-4 pt-2 border-t items-center">
-                                <button onclick="openDonePmsModal('${item.id}')" class="bg-[#10b981] text-white text-xs px-2.5 py-1.5 rounded-lg font-bold shadow-xs transition-all hover:bg-[#059669]">✔ Log Done PMS</button>
-                                <div class="flex gap-1">
-                                    <button onclick="openSlip('${item.id}')" class="bg-sky-100 text-sky-800 text-xs px-2 py-1.5 rounded-lg font-bold hover:bg-sky-200">🖨️ Gate Pass</button>
-                                    <button onclick="openEquipmentModal('${item.id}')" class="bg-amber-100 p-1.5 rounded-lg text-xs hover:bg-amber-200">✏️</button>
-                                    <button onclick="deleteEquipment('${item.id}')" class="bg-rose-100 p-1.5 rounded-lg text-xs hover:bg-rose-200">🗑</button>
+                            <div class="flex justify-between gap-2 mt-4 pt-3 border-t items-center">
+                                <button onclick="openDonePmsModal('${item.id}')" class="bg-[#10b981] hover:bg-[#059669] text-white text-xs px-4 py-2.5 rounded-lg font-bold shadow-xs flex-1 transition-all">✔ Log Done PMS</button>
+                                <div class="flex gap-1.5 shrink-0">
+                                    <button onclick="openSlip('${item.id}')" class="bg-sky-100 hover:bg-sky-200 text-sky-800 text-xs px-3 py-2.5 rounded-lg font-bold">🖨️ Slip</button>
+                                    <button onclick="openEquipmentModal('${item.id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 p-2.5 rounded-lg text-xs font-bold">✏️</button>
+                                    <button onclick="deleteEquipment('${item.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2.5 rounded-lg text-xs font-bold">🗑</button>
                                 </div>
                             </div>
                         </div>
@@ -518,6 +610,7 @@
                     document.getElementById('formModel').value = item.model;
                     document.getElementById('formPlate').value = item.plate;
                     document.getElementById('formDriver').value = item.driver || '';
+                    document.getElementById('formDriverPhone').value = item.driverPhone || '';
                     document.getElementById('formCurrentOdo').value = item.currentOdo;
                     document.getElementById('formOdoInterval').value = item.odoInterval || 10000;
                     document.getElementById('formTargetOdo').value = item.targetOdo;
@@ -538,6 +631,7 @@
             const model = document.getElementById('formModel').value;
             const plate = document.getElementById('formPlate').value;
             const driver = document.getElementById('formDriver').value || 'Unassigned';
+            const driverPhone = document.getElementById('formDriverPhone').value || '';
             const currentOdo = parseInt(document.getElementById('formCurrentOdo').value);
             const odoInterval = parseInt(document.getElementById('formOdoInterval').value);
             const targetOdo = parseInt(document.getElementById('formTargetOdo').value);
@@ -554,13 +648,13 @@
                 const idx = fleet.findIndex(f => f.id === id);
                 if(idx !== -1) {
                     fleet[idx] = { 
-                        ...fleet[idx], model, plate, driver, currentOdo, odoInterval, targetOdo, lastPmsDate, targetDue, interval,
+                        ...fleet[idx], model, plate, driver, driverPhone, currentOdo, odoInterval, targetOdo, lastPmsDate, targetDue, interval,
                         orcrDoc: orcrDoc || fleet[idx].orcrDoc,
                         insuranceDoc: insuranceDoc || fleet[idx].insuranceDoc
                     };
                 }
             } else {
-                fleet.push({ id: (new Date().getTime()).toString(), model, plate, driver, currentOdo, odoInterval, targetOdo, lastPmsOdo: currentOdo, lastPmsDate, targetDue, interval, totalExpenses: 0, orcrDoc, insuranceDoc, logs: [] });
+                fleet.push({ id: "UNIT-" + (new Date().getTime()).toString(), model, plate, driver, driverPhone, currentOdo, odoInterval, targetOdo, lastPmsOdo: currentOdo, lastPmsDate, targetDue, interval, totalExpenses: 0, orcrDoc, insuranceDoc, logs: [] });
             }
             saveState(); closeEquipmentModal(); renderFleet();
         }
